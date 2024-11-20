@@ -17,7 +17,7 @@ def encrypt(password: str) -> str:
     # Remember to:
     # 1. Encode the password string
     # 2. Use hexdigest() to get the hash
-    pass
+    return hashlib.sha256(password.encode()).hexdigest()
 
 
 # Test your encrypt function
@@ -61,7 +61,9 @@ def add_update_user(users: dict, username: str, password: str) -> None:
     add_user(users, "alice", "newpass123")
     returns {"alice": "new_hash"} where new_hash is encrypt("newpass123")
     """
-    pass
+    hashed_password = encrypt(password)
+    users[username] = hashed_password
+    return
 
 
 def test_add_update_user():
@@ -97,7 +99,9 @@ def check_password(users: dict, username: str, password: str) -> bool:
     # 1. The username exists in the database
     # 2. The hashed password matches what's stored
     # Hint: Use the encrypt() function on the password before comparing!
-    pass
+    if username in users:
+        return encrypt(password) == users[username]
+    return False
 
 
 # Test your check_password function
@@ -130,7 +134,10 @@ def add_user_with_requirements(users: dict, username: str, password: str) -> boo
     - Contains at least one uppercase letter
     Returns False if requirements aren't met
     """
-    pass
+    if len(password) >= 8 and any(char.isdigit() for char in password) and any(char.isupper() for char in password):
+        add_update_user(users, username, password)
+        return True
+    return False
 
 
 # Test your password requirements
@@ -150,6 +157,7 @@ def test_requirements():
 
 
 test_requirements()
+# add_user_with_requirements(users={}, username='user1', password='test123')
 
 # %% Bonus Exercise 2: Add Global Salt
 # For extra security, we'll add a global salt to all passwords.
@@ -173,7 +181,8 @@ def add_user_with_salt(users: dict, username: str, password: str) -> None:
     add_user_with_salt({}, "alice", "pass123")
     returns {"alice": hash_of_pass123_plus_global_salt}
     """
-    pass
+    add_update_user(users, username, password + GLOBAL_SALT)
+    return users
 
 
 def test_salt():
