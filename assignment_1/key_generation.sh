@@ -1,0 +1,1 @@
+ssh-keygen -t rsa -f ${CODESPACE_VSCODE_FOLDER}/my_keypair_assignemt_1 -N ''
