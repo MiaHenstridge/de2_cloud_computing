@@ -7,7 +7,7 @@ from Crypto.PublicKey import RSA
 #%%
 # Define paths for our key files
 PROJECT_FOLDER = Path(__file__).parent.parent
-PUBLIC_KEY_FILE = PROJECT_FOLDER / "my_keypair_assignemt_1.pub"  # Contains the public key
+PUBLIC_KEY_FILE = PROJECT_FOLDER / "ceu_key.pub"  # Contains the public key
 # %%
 # Make sure our key files exist before proceeding
 assert Path.exists(PUBLIC_KEY_FILE)
