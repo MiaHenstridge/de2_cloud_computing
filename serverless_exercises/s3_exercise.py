@@ -1,4 +1,4 @@
-#%%
+# %%
 import os
 import pprint
 import random
@@ -9,13 +9,10 @@ import boto3
 # initialize pretty printer
 pp = pprint.PrettyPrinter(indent=2)
 
-# create s3 client 
-s3 = boto3.client(
-    's3',
-    region_name='eu-west-1'
-)
+# create s3 client
+s3 = boto3.client("s3", region_name="eu-west-1")
 
-print(f'Using AWS region: {s3.meta.region_name}')
+print(f"Using AWS region: {s3.meta.region_name}")
 # %%
 # list all s3 buckets in your account
 response = s3.list_buckets()
@@ -31,6 +28,8 @@ else:
     print("No buckets found in your account")
 
 print(f"\n✅ Successfully retrieved {len(response['Buckets'])} buckets")
+
+
 # %%
 # create a bucket
 # function to generate unique bucket names
@@ -39,8 +38,9 @@ def generate_bucket_name(base_name):
     random_part = "".join(random.choices(string.digits, k=3))
     return f"{base_name}-{random_part}"
 
+
 # generate a unique bucket name
-my_name = 'mainong-bucket'
+my_name = "mainong-bucket"
 bucket_name = generate_bucket_name(my_name)
 
 if my_name == "add-your-name-here":
@@ -50,12 +50,12 @@ else:
     print(f"📝 Your generated bucket name: {bucket_name}")
 # %%
 # create a bucket with generated name
-default_region = 'eu-west-1'
+default_region = "eu-west-1"
 
 try:
     bucket_configuration = {"LocationConstraint": default_region}
     response = s3.create_bucket(Bucket=bucket_name, CreateBucketConfiguration=bucket_configuration)
-    print('\n AWS response:')
+    print("\n AWS response:")
     pp.pprint(response)
 
     if response["ResponseMetadata"]["HTTPStatusCode"] == 200:
