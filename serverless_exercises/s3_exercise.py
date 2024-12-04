@@ -1,6 +1,4 @@
-# %%
-# Import required libraries and set up our environment
-# We'll use these throughout the tutorial to interact with AWS S3
+#%%
 import os
 import pprint
 import random
@@ -8,25 +6,18 @@ import string
 
 import boto3
 
-print("📚 Setting up the environment...")
-
-# Initialize pretty printer for better output formatting
+# initialize pretty printer
 pp = pprint.PrettyPrinter(indent=2)
 
-# Create S3 client using default credentials from AWS CLI
-# boto3 will automatically use credentials from ~/.aws/credentials
+# create s3 client 
 s3 = boto3.client(
-    "s3",
-    region_name="eu-west-1",  # Ireland region
+    's3',
+    region_name='eu-west-1'
 )
 
-print("✅ Environment setup complete!")
-print(f"🌍 Using AWS region: {s3.meta.region_name}")
-
+print(f'Using AWS region: {s3.meta.region_name}')
 # %%
-# Let's first check what buckets already exist in your AWS account
-# This helps us understand what resources we're starting with
-print("📋 Listing all S3 buckets in your account...")
+# list all s3 buckets in your account
 response = s3.list_buckets()
 
 print("\n📦 Raw response from AWS:")
@@ -40,21 +31,16 @@ else:
     print("No buckets found in your account")
 
 print(f"\n✅ Successfully retrieved {len(response['Buckets'])} buckets")
-
 # %%
-# Now we'll create a function to generate unique bucket names
-# S3 bucket names must be globally unique across all AWS accounts
-print("🔧 Setting up bucket name generator...")
-
-
+# create a bucket
+# function to generate unique bucket names
 def generate_bucket_name(base_name):
-    """Generate a unique bucket name using base name and random digits"""
+    """Generate a unique bucket name using a base name and random digits"""
     random_part = "".join(random.choices(string.digits, k=3))
     return f"{base_name}-{random_part}"
 
-
-# Generate a unique bucket name - replace 'add-your-name-here' with your name!
-my_name = "mainong-bucket"  # TODO: Change this!
+# generate a unique bucket name
+my_name = 'mainong-bucket'
 bucket_name = generate_bucket_name(my_name)
 
 if my_name == "add-your-name-here":
@@ -62,20 +48,14 @@ if my_name == "add-your-name-here":
 else:
     print("✅ Name generator ready")
     print(f"📝 Your generated bucket name: {bucket_name}")
-
 # %%
-# Create a new S3 bucket with our generated name
-# We'll specify EU (Ireland) as our region
-default_region = "eu-west-1"
-print(f"🚀 Creating new bucket: {bucket_name}")
-print(f"🌍 Region: {default_region}")
+# create a bucket with generated name
+default_region = 'eu-west-1'
 
 try:
-    # Note: Bucket configuration is required for all regions except us-east-1
     bucket_configuration = {"LocationConstraint": default_region}
     response = s3.create_bucket(Bucket=bucket_name, CreateBucketConfiguration=bucket_configuration)
-
-    print("\n📦 AWS Response:")
+    print('\n AWS response:')
     pp.pprint(response)
 
     if response["ResponseMetadata"]["HTTPStatusCode"] == 200:
@@ -84,6 +64,7 @@ except Exception as e:
     print(f"❌ Error creating bucket: {str(e)}")
 
 # %%
+# upload a file from your codespace to the bucket
 # Create a sample text file that we'll upload to S3
 # This demonstrates creating and uploading content to our bucket
 print("📝 Creating sample file...")
@@ -102,7 +83,6 @@ try:
     print("-" * 40)
 except Exception as e:
     print(f"❌ Error creating file: {str(e)}")
-
 # %%
 # Upload our file to S3
 # This shows how to transfer local files to your S3 bucket
