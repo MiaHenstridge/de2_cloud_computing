@@ -1,8 +1,8 @@
 -- create bronze_views table
-DROP TABLE IF EXISTS mainong.bronze_views;
+DROP TABLE IF EXISTS miahenstridge.bronze_views;
 
 CREATE EXTERNAL TABLE
-mainong.bronze_views (
+miahenstridge.bronze_views (
     article STRING,
     views INT,
     rank INT,

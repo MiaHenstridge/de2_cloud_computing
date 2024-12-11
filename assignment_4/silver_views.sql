@@ -1,7 +1,7 @@
 -- create silver_views table
-DROP TABLE IF EXISTS mainong.silver_views;
+DROP TABLE IF EXISTS miahenstridge.silver_views;
 
-CREATE TABLE mainong.silver_views
+CREATE TABLE miahenstridge.silver_views
     WITH (
         format='PARQUET',
         parquet_compression='SNAPPY',
@@ -11,5 +11,6 @@ CREATE TABLE mainong.silver_views
         article,
         views,
         rank,
-        date,
-    FROM mainong.bronze_views;
+        date
+        -- cast(from_iso8601_timestamp(retrieved_at) AS TIMESTAMP) as retrieved_at
+    FROM miahenstridge.bronze_views;
