@@ -11,7 +11,7 @@ pp = pprint.PrettyPrinter(indent=2)
 # %%
 # retrieve data from wikipedia
 # subject date
-DATE_PARAM = '2024-11-15'
+DATE_PARAM = '2024-11-18'
 
 date = datetime.datetime.strptime(DATE_PARAM, "%Y-%m-%d")
 
