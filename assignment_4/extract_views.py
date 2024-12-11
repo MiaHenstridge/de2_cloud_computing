@@ -102,6 +102,7 @@ for page in top_views:
         "article": page["article"],
         "views": page["views"],
         "rank": page["rank"],
+        "date": date.strftime("%Y-%m-%d"),
         "retrieved_at": current_time.replace(
             tzinfo=None
         ).isoformat(),
