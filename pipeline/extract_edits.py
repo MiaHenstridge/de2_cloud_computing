@@ -1,10 +1,13 @@
 # %% Verification Functions
 import datetime
 import json
+import pprint
 from pathlib import Path
 
 import boto3
 import requests
+
+pp = pprint.PrettyPrinter(indent=2)
 
 
 def verify_lab1_solution(file_path, content):
@@ -179,8 +182,12 @@ print(f"Created directory {RAW_LOCATION_BASE}")
 # Store the path to the file in the variable `raw_edits_file`.
 
 # YOUR SOLUTION COMES HERE =========================
-raw_edits_file = ""  # Placeholder, feel free to remove this
-
+raw_edits_file = (
+    RAW_LOCATION_BASE / f"raw-edits-{date.strftime("%Y-%m-%d")}.txt"
+)  # Placeholder, feel free to remove this
+# print(raw_edits_file)
+with open(raw_edits_file, "w") as file:
+    file.write(wiki_response_body)
 # ==================================================
 
 # Verify solution
@@ -193,15 +200,25 @@ else:
 #########
 # LAB 2 #
 #########
-S3_WIKI_BUCKET = "<>"
+S3_WIKI_BUCKET = "mainong-wikidata"
 # Create a new bucket for your wikipedia pipeline
 # > Choose a name ending with "-wikidata"
 # > Store the bucket name in the variable S3_WIKI_BUCKET
 # > Create the bucket if it does not exist
-s3 = boto3.client("s3")
+s3 = boto3.client("s3", region_name="eu-west-1")
 
 # YOUR SOLUTION COMES HERE =========================
+# create a new S3 bucket with the name stored in S3_WIKI_BUCKET
+default_region = "eu-west-1"
 
+try:
+    bucket_configuration = {"LocationConstraint": default_region}
+    response = s3.create_bucket(Bucket=S3_WIKI_BUCKET, CreateBucketConfiguration=bucket_configuration)
+
+    print("\n AWS Resonse:")
+    pp.print(response)
+except Exception as e:
+    print(f"Error creating bucket: {str(e)}")
 # ==================================================
 
 if not verify_bucket_name(S3_WIKI_BUCKET):
@@ -228,7 +245,14 @@ except Exception as e:
 
 # YOUR SOLUTION COMES HERE =========================
 
-s3_key = ""  # Placeholder, feel free to remove this
+s3_key = f"datalake/raw/raw-edits-{date.strftime("%Y-%m-%d")}.txt"  # Placeholder, feel free to remove this
+
+# upload file to S3 bucket
+try:
+    s3.upload_file(raw_edits_file, S3_WIKI_BUCKET, s3_key)
+    print("Upload successful!")
+except Exception as e:
+    print(f"Error uploading file: {str(e)}")
 
 # ==================================================
 
