@@ -71,3 +71,5 @@ try:
     print("\n✅ Content extracted successfully")
 except Exception as e:
     print(f"❌ Error parsing content: {str(e)}")
+
+# %%
